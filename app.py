@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -31,7 +32,11 @@ def add_note():
 
         if not title or not description:
             flash('Title and Description are required.', 'error')
-            return render_template('form.html', note={'title': title, 'description': description}, action='Add')
+            return render_template(
+                'form.html',
+                note={'title': title, 'description': description},
+                action='Add'
+            )
 
         note = Note(title=title, description=description)
         db.session.add(note)
@@ -72,4 +77,6 @@ def delete_note(note_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
