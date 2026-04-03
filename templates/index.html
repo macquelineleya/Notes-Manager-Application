@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>All Notes</h2>
+    <a class="btn btn-success" href="{{ url_for('add_note') }}">Add New</a>
+  </div>
+
+  {% if notes %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for note in notes %}
+          <tr>
+            <td>{{ note.id }}</td>
+            <td>{{ note.title }}</td>
+            <td>{{ note.description }}</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="{{ url_for('edit_note', note_id=note.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('delete_note', note_id=note.id) }}" style="display:inline" onsubmit="return confirm('Delete this record?');">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No records found yet. Add a note to get started.</p>
+  {% endif %}
+{% endblock %}
