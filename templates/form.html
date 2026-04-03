@@ -1,17 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>{{ action }} Note</h2>
+  <h2>
+    {% if action == 'Edit' %}
+      Edit Note
+    {% else %}
+      Add Note
+    {% endif %}
+  </h2>
+
   <form method="post">
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
       <input type="text" class="form-control" id="title" name="title" value="{{ note.title | default('') }}" required />
     </div>
+
     <div class="mb-3">
       <label for="description" class="form-label">Description</label>
       <textarea class="form-control" id="description" name="description" rows="4" required>{{ note.description | default('') }}</textarea>
     </div>
-    <button type="submit" class="btn btn-primary">{{ action }}</button>
+
+    {% if action == 'Edit' %}
+      <button type="submit" class="btn btn-success">Save Changes</button>
+    {% else %}
+      <button type="submit" class="btn btn-primary">Add Note</button>
+    {% endif %}
+
     <a class="btn btn-secondary" href="{{ url_for('index') }}">Cancel</a>
   </form>
 {% endblock %}
